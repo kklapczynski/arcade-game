@@ -78,7 +78,7 @@ class Player {
             // x position within canvas so in range <0,504> (including 0, excluding 505)
             // y position within canvas so in range <0,6*stepY-1> (rows shown don't cover whole canvas -
             // see engine.render())
-            if(this.isMoveInCanvas(this.x, this.y, this.moveX, this.moveY, 0, 5*stepX - 1, 0, 6*stepY -1 )) {
+            if(this.isMoveInCanvas(this.x + this.moveX, this.y + this.moveY, 0, 5*stepX - 1, 0, 6*stepY -1 )) {
 
                 // change position according to arrow used
                 this.x += this.moveX;
@@ -105,12 +105,8 @@ class Player {
         return currentY === yToReach;
     }
 
-    isMoveInCanvas(currentX, currentY, moveX, moveY, canvasMinX, canvasMaxX, canvasMinY, canvasMaxY) {
-        const x = currentX + moveX;
-        const y = currentY + moveY;
-
-        if(x >= canvasMinX && x <= canvasMaxX && y >= canvasMinY && y <= canvasMaxY)
-            return true;
+    isMoveInCanvas(x, y, canvasMinX, canvasMaxX, canvasMinY, canvasMaxY) {
+        return x >= canvasMinX && x <= canvasMaxX && y >= canvasMinY && y <= canvasMaxY;
     }
 
     clearLastMove() {
