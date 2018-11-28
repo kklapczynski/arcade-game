@@ -1,6 +1,6 @@
 // global constants
-const stepX = 101;
-const stepY = 83;
+const stepX = 101;  // equals col width in engine.render()
+const stepY = 83;   // equals row heigth in engine.render()
 const canvasWidth = 505;
 const canvasHeight = 606;
 
@@ -40,9 +40,9 @@ class Enemy {
 
         this.x += this.speed * dt;
 
-        // TODO: bug comes back on the stage after leaving it with different paramters
+        // DONE: bug comes back on the stage after leaving it with different paramters
         if (this.x > canvasWidth) {
-            this.x = getRandomInt(-5, 0)*stepX;
+            this.x = getRandomInt(-5, 0)*stepX; // start out of canvas to randomize when apearing on stage
             this.y = getRandomInt(1, 4)*stepY;
             this.speed = getRandomInt(100, 500);
         }
@@ -69,11 +69,52 @@ class Player {
         this.moveY = 0;
     }
 
+    // this function gets called repeatidely in Engine in updateEntities in update in main, that is recalled all the time by win.requestAnimationFrame(main);
     update() {
-        // console.log(`Player update()`);
-        // TODO: find out what to do here
-        this.x += this.moveX;
-        this.y += this.moveY;
+        // TODO: handle collision with enemy - see project description links
+        // update only when move made
+        if( this.moveX || this.moveY) {
+            // DONE: check if not outside canvas == in the rows and columns shown
+            // x position within canvas so in range <0,504> (including 0, excluding 505)
+            // y position within canvas so in range <0,6*stepY-1> (rows shown don't cover whole canvas -
+            // see engine.render())
+            if(this.isMoveInCanvas(this.x, this.y, this.moveX, this.moveY, 0, 5*stepX - 1, 0, 6*stepY -1 )) {
+
+                // change position according to arrow used
+                this.x += this.moveX;
+                this.y += this.moveY;
+                this.clearLastMove();
+                // DONE: check if water reached
+                if(this.isRowReached(this.y, 0)) {
+                    // DONE: and if so reset player position to starting position
+                    this.resetPosition();
+                }
+            } else {
+                // if move was outside canvas clear it
+                this.clearLastMove();
+            }
+        }
+    }
+
+    resetPosition() {
+        this.x = 2*stepX;
+        this.y = 5*stepY;
+    }
+
+    isRowReached(currentY, yToReach) {
+        return currentY === yToReach;
+    }
+
+    isMoveInCanvas(currentX, currentY, moveX, moveY, canvasMinX, canvasMaxX, canvasMinY, canvasMaxY) {
+        const x = currentX + moveX;
+        const y = currentY + moveY;
+
+        if(x >= canvasMinX && x <= canvasMaxX && y >= canvasMinY && y <= canvasMaxY)
+            return true;
+    }
+
+    clearLastMove() {
+        // clear moves after update
         this.moveX = 0;
         this.moveY = 0;
     }
