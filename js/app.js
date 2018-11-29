@@ -21,9 +21,12 @@ class Enemy {
     // constructor function holds properties and methods owned by each instance
     constructor() {
         this.sprite = 'images/enemy-bug.png';
+        this.height = 67;   // measured with page ruler on running game
+        this.width = 75;    // measured with page ruler on running game (99px), but reduced for better collision timing
         // DONE: randomize rows (y) from 1*83 to 4*stepY
         // DONE: randomize when bug is appearing on stage
         // DONE: randomize speed
+        // TODO: optimize: create inherited method to set own properties
         this.x = getRandomInt(-6, -1)*stepX;
         this.y = getRandomInt(1, 4)*stepY;
         this.speed = getRandomInt(100, 500);
@@ -63,6 +66,8 @@ class Enemy {
 class Player {
     constructor() {
         this.sprite = 'images/char-boy.png';
+        this.height = 77;   // measured with page ruler on running game
+        this.width = 68;    // measured with page ruler on running game
         this.x = 2*stepX; // start in middle column
         this.y = 5*stepY;  // and in first row from bottom
         this.moveX = 0;
@@ -71,7 +76,12 @@ class Player {
 
     // this function gets called repeatidely in Engine in updateEntities in update in main, that is recalled all the time by win.requestAnimationFrame(main);
     update() {
-        // TODO: handle collision with enemy - see project description links
+        // DONE: handle collision with enemy - see project description links
+        if(this.isCollidedWithEnemy(this, allEnemies)) {
+            console.log('Enemy got You! Restart the game.');
+            this.resetPosition();
+        }
+
         // update only when move made
         if( this.moveX || this.moveY) {
             // DONE: check if not outside canvas == in the rows and columns shown
@@ -92,6 +102,16 @@ class Player {
             } else {
                 // if move was outside canvas clear it
                 this.clearLastMove();
+            }
+        }
+    }
+
+    isCollidedWithEnemy(playerObject, enemiesObjectsArray) {
+        // with small amount of objects to check collisions the simplest approach is sufficient
+        for(let enemy of enemiesObjectsArray) {
+            if (enemy.x < playerObject.x + playerObject.width && enemy.x + enemy.width > playerObject.x
+                && enemy.y < playerObject.y + playerObject.height && enemy.y + enemy.height > playerObject.y) {
+                return true;
             }
         }
     }
@@ -121,7 +141,6 @@ class Player {
 
     // DONE: handle input - keybord arrow buttons press
     handleInput(moveDirection) {
-        console.log(`Handling Players input`);
         switch (moveDirection) {
             case 'left':
                 this.moveX = -stepX;
@@ -146,7 +165,7 @@ class Player {
 const allEnemies = [];
 for(i=1; i<=4;i++) {
     allEnemies.push(new Enemy());
-}
+};
 // allEnemies.push(enemy1);
 
 // Place the player object in a variable called player
