@@ -26,13 +26,32 @@ class Enemy {
         // DONE: randomize rows (y) from 1*83 to 4*stepY
         // DONE: randomize when bug is appearing on stage
         // DONE: randomize speed
-        // TODO: optimize: create inherited method to set own properties
-        this.x = getRandomInt(-6, -1)*stepX;
-        this.y = getRandomInt(1, 4)*stepY;
-        this.speed = getRandomInt(100, 500);
+        // DONE: optimize: create inherited method to set own properties
+        this.x = this.setPropertyX(6, 1, stepX);        // starting horizontal position of enemy
+        this.y = this.setPropertyY(1, 4, stepY);        // starting vertical position of enemy
+        this.speed = this.setPropertySpeed(100, 500);   // move distance in pixels per update (engine cycle)
     }
 
     // properties and methods defined outside constructor are inherited by each instance
+    setPropertyX(maxColsBeforeCanvas, minColsBeforeCanvas, colWidth) {
+        return getRandomInt(-maxColsBeforeCanvas, -minColsBeforeCanvas)*colWidth;
+    }
+
+    setPropertyY(minRowNo, maxRowNo, rowHeight) {
+        // y coordinate goes from top down: min -> top, max -> bottom, 1st row is number 0
+        return getRandomInt(minRowNo, maxRowNo)*rowHeight;
+    }
+
+    setPropertySpeed(min, max) {
+        return getRandomInt(min, max);
+    }
+
+    // resets enemy that leaves the stage
+    resetEnemy() {
+        this.x = this.setPropertyX(6, 1, stepX);
+        this.y = this.setPropertyY(1, 4, stepY);
+        this.speed = this.setPropertySpeed(100, 500);
+    }
 
     // Update the enemy's position, required method for game
     // Parameter: dt, a time delta between ticks
@@ -43,11 +62,9 @@ class Enemy {
 
         this.x += this.speed * dt;
 
-        // DONE: bug comes back on the stage after leaving it with different paramters
+        // DONE: enemy comes back on the stage after leaving it with different paramters
         if (this.x > canvasWidth) {
-            this.x = getRandomInt(-5, 0)*stepX; // start out of canvas to randomize when apearing on stage
-            this.y = getRandomInt(1, 4)*stepY;
-            this.speed = getRandomInt(100, 500);
+            this.resetEnemy();
         }
     }
 
@@ -66,16 +83,26 @@ class Enemy {
 class Player {
     constructor() {
         this.sprite = 'images/char-boy.png';
-        this.height = 77;   // measured with page ruler on running game
-        this.width = 68;    // measured with page ruler on running game
-        this.x = 2*stepX; // start in middle column
-        this.y = 5*stepY;  // and in first row from bottom
-        this.moveX = 0;
-        this.moveY = 0;
+        this.height = 77;       // measured with page ruler on running game
+        this.width = 68;        // measured with page ruler on running game
+        this.x = 2*stepX;       // start in middle column
+        this.y = 5*stepY;       // and in first row from bottom
+        this.moveX = 0;         // horizontal move triggered by pressing arrow buttons
+        this.moveY = 0;         // vertical move triggered by pressing arrow buttons
+        this.jumpHeight = 0;    // prop used for jumping after win
+        this.jumped = false;    // prop used for jumping after win
+        this.numberOfJumps = 0; // prop used for jumping after win
+        this.isWinner = false;  // flag to mark when game won
     }
 
     // this function gets called repeatidely in Engine in updateEntities in update in main, that is recalled all the time by win.requestAnimationFrame(main);
     update() {
+        if(this.isWinner) {
+            if(this.winJumping()) {
+                this.resetGame();
+            }
+            return;
+        }
         // DONE: handle collision with enemy - see project description links
         if(this.isCollidedWithEnemy(this, allEnemies)) {
             console.log('Enemy got You! Restart the game.');
@@ -96,8 +123,7 @@ class Player {
                 this.clearLastMove();
                 // DONE: check if water reached
                 if(this.isRowReached(this.y, 0)) {
-                    // DONE: and if so reset player position to starting position
-                    this.resetPosition();
+                    this.isWinner = true;
                 }
             } else {
                 // if move was outside canvas clear it
@@ -106,9 +132,43 @@ class Player {
         }
     }
 
+    resetGame() {
+        this.isWinner = false;
+        // reset enemies
+        for(let enemy of allEnemies) {
+            enemy.resetEnemy();
+        }
+        // DONE: and if so reset player position to starting position
+        this.resetPosition();
+    }
+
+    winJumping() {
+        if(this.numberOfJumps === 3) {
+            this.numberOfJumps = 0;
+            return true;
+        }
+
+        if(!this.jumped) {
+            this.y -= 5;
+            this.jumpHeight += 5;
+            if (this.jumpHeight === 50) {
+                this.jumped = true;
+            }
+        } else {
+            this.y += 5;
+            this.jumpHeight -= 5;
+            if (this.jumpHeight === 0) {
+                this.jumped = false;
+                this.numberOfJumps += 1;
+            }
+        }
+        return false;
+    }
+
     isCollidedWithEnemy(playerObject, enemiesObjectsArray) {
         // with small amount of objects to check collisions the simplest approach is sufficient
         for(let enemy of enemiesObjectsArray) {
+            // credits to: https://stackoverflow.com/questions/13916966/adding-collision-detection-to-images-drawn-on-canvas
             if (enemy.x < playerObject.x + playerObject.width && enemy.x + enemy.width > playerObject.x
                 && enemy.y < playerObject.y + playerObject.height && enemy.y + enemy.height > playerObject.y) {
                 return true;
