@@ -1,9 +1,10 @@
+// TODO: rebuild to use modules with babel and webpack
 // global constants
 const stepX = 101;  // equals col width in engine.render()
 const stepY = 83;   // equals row heigth in engine.render()
 const canvasWidth = 505;
 const canvasHeight = 606;
-
+console.log('app.js');
 // from https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -223,7 +224,7 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 const allEnemies = [];
-for(i=1; i<=4;i++) {
+for(let i=1; i<=4;i++) {
     allEnemies.push(new Enemy());
 };
 // allEnemies.push(enemy1);
