@@ -1,11 +1,11 @@
 import Player from './Player';
 import Enemy from './Enemy';
-import { Engine } from './engine';
+import Engine from './Engine';
 import Resources from './Resources';
 import * as globals from './globals.js';
-// TODO: rebuild to use modules with babel and webpack
+// DONE: rebuild to use modules with babel and webpack
 
-// add canvas to document and save its context to pass where needed
+// DONE: add canvas to document and save its context to pass where needed
 const doc = window.document;
 const canvas = doc.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -13,8 +13,21 @@ canvas.width = globals.canvasWidth;
 canvas.height = globals.canvasHeight;
 doc.body.appendChild(canvas);
 
-
 const resources = new Resources();
+console.log(resources._load);
+/* Go ahead and load all of the images we know we're going to need to
+    * draw our game level. Then set init as the callback method, so that when
+    * all of these images are properly loaded our game will start.
+    */
+
+resources.load([
+'images/stone-block.png',
+'images/water-block.png',
+'images/grass-block.png',
+'images/enemy-bug.png',
+'images/char-boy.png'
+]);
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 const allEnemies = [];
@@ -25,26 +38,8 @@ for(let i=1; i<=4;i++) {
 // Place the player object in a variable called player
 const player = new Player(allEnemies, ctx, resources);
 
-
+// instantiate Engine object
 const engine = new Engine(window, allEnemies, player, resources, ctx, canvas);
-
-/* Assign the canvas' context object to the global variable (the window
-     * object when run in a browser) so that developers can use it more easily
-     * from within their app.js files.
-     */
-
-/* Go ahead and load all of the images we know we're going to need to
-    * draw our game level. Then set init as the callback method, so that when
-    * all of these images are properly loaded our game will start.
-    */
-
-resources.load([
-    'images/stone-block.png',
-    'images/water-block.png',
-    'images/grass-block.png',
-    'images/enemy-bug.png',
-    'images/char-boy.png'
-]);
 
 resources.onReady(engine.init);
 

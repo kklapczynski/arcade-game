@@ -28,7 +28,6 @@ export default class Player {
         }
         // DONE: handle collision with enemy - see project description links
         if(this.isCollidedWithEnemy(this, this.allEnemies)) {
-            console.log('Enemy got You! Restart the game.');
             this.resetPosition();
         }
 
@@ -138,8 +137,7 @@ export default class Player {
                 this.moveY = globals.stepY;
                 break;
             default:
-                console.log(`Use keyboard arrows horsebox!`);
+                console.log(`Use keyboard arrows!`);
         }
     }
-}
-
+};

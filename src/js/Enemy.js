@@ -1,4 +1,5 @@
 import * as globals from './globals.js';
+
 export default class Enemy {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started

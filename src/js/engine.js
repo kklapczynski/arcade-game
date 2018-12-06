@@ -1,4 +1,3 @@
-import Resources from './Resources';
 /* Engine.js
  * This file provides the game loop functionality (update entities and render),
  * draws the initial game board on the screen, and then calls the update and
@@ -14,7 +13,7 @@ import Resources from './Resources';
  * writing app.js a little simpler to work with.
  */
 
-export class Engine {
+export default class Engine {
     constructor(win, allEnemies, player, resources, ctx, canvas) {
         /* Predefine the variables we'll be using within this scope,
         * create the canvas element, grab the 2D context for that canvas
