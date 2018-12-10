@@ -2,6 +2,7 @@ const path = require('path');   // nodejs function - includes 'path' package int
 const HtmlWebpackPlugin = require('html-webpack-plugin');   // another package for webpack to build/stream html from src
 
 module.exports = {
+    devtool: 'cheap-module-eval-source-map',
     entry: ['babel-polyfill','./src/js/app.js'],
     output: {
         path: path.resolve(__dirname, 'dist'),  // was: path.resolve(__dirname, 'dist/js'), but dev-server wasn't updating when changes in index.html done

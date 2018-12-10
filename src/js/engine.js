@@ -27,52 +27,45 @@ export default class Engine {
         this.canvas = canvas;
         this.lastTime;
         /* This function does some initial setup that should only occur once,
-     * particularly setting the lastTime variable that is required for the
-     * game loop.
-     */
-    this.init = () => {
-        this.reset();
-        this.lastTime = Date.now();
-        this.main();
+        * particularly setting the lastTime variable that is required for the
+        * game loop.
+        */
+        this.init = () => {
+            this.reset();
+            this.lastTime = Date.now();
+            this.main();
+        }
+
+        /* This function serves as the kickoff point for the game loop itself
+        * and handles properly calling the update and render methods.
+        */
+        this.main = () => {
+            /* Get our time delta information which is required if your game
+            * requires smooth animation. Because everyone's computer processes
+            * instructions at different speeds we need a constant value that
+            * would be the same for everyone (regardless of how fast their
+            * computer is) - hurray time!
+            */
+            const now = Date.now(),
+                dt = (now - this.lastTime) / 1000.0;
+
+            /* Call our update/render functions, pass along the time delta to
+            * our update function since it may be used for smooth animation.
+            */
+            this.update(dt);
+            this.render();
+
+            /* Set our lastTime variable which is used to determine the time delta
+            * for the next time this function is called.
+            */
+            this.lastTime = now;
+
+            /* Use the browser's requestAnimationFrame function to call this
+            * function again as soon as the browser is able to draw another frame.
+            */
+            this.win.requestAnimationFrame(this.main);
+        }
     }
-
-    /* This function serves as the kickoff point for the game loop itself
-     * and handles properly calling the update and render methods.
-     */
-    this.main = () => {
-        /* Get our time delta information which is required if your game
-         * requires smooth animation. Because everyone's computer processes
-         * instructions at different speeds we need a constant value that
-         * would be the same for everyone (regardless of how fast their
-         * computer is) - hurray time!
-         */
-        const now = Date.now(),
-            dt = (now - this.lastTime) / 1000.0;
-
-        /* Call our update/render functions, pass along the time delta to
-         * our update function since it may be used for smooth animation.
-         */
-        this.update(dt);
-        this.render();
-
-        /* Set our lastTime variable which is used to determine the time delta
-         * for the next time this function is called.
-         */
-        this.lastTime = now;
-
-        /* Use the browser's requestAnimationFrame function to call this
-         * function again as soon as the browser is able to draw another frame.
-         */
-        this.win.requestAnimationFrame(this.main);
-    }
-    }
-
-
-
-
-
-
-
 
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
