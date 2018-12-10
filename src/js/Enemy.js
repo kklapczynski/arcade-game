@@ -8,7 +8,7 @@ export default class Enemy {
     // a helper we've provided to easily load images
     // constructor function holds properties and methods owned by each instance
     constructor(resources, ctx) {
-        this.sprite = 'images/enemy-bug.png';
+        this.sprite = globals.img_enemy_url;
         this.height = 67;   // measured with page ruler on running game
         this.width = 75;    // measured with page ruler on running game (99px), but reduced for better collision timing
         // DONE: randomize rows (y) from 1*83 to 4*stepY

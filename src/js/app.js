@@ -3,6 +3,7 @@ import Enemy from './Enemy';
 import Engine from './Engine';
 import Resources from './Resources';
 import * as globals from './globals.js';
+
 // DONE: rebuild to use modules with babel and webpack
 
 // DONE: add canvas to document and save its context to pass where needed
@@ -14,18 +15,22 @@ canvas.height = globals.canvasHeight;
 doc.body.appendChild(canvas);
 
 const resources = new Resources();
-console.log(resources._load);
 /* Go ahead and load all of the images we know we're going to need to
     * draw our game level. Then set init as the callback method, so that when
     * all of these images are properly loaded our game will start.
     */
+// DONE: change url to use: import img from './images/stone-block.png'
+// TODO: to use file-loader:
+// https://github.com/webpack-contrib/file-loader
+// TODO: to be able to use image optimistion with image-webpack-loader:
+// https://github.com/tcoopman/image-webpack-loader
 
 resources.load([
-'images/stone-block.png',
-'images/water-block.png',
-'images/grass-block.png',
-'images/enemy-bug.png',
-'images/char-boy.png'
+    globals.img_stone_url,
+    globals.img_water_url,
+    globals.img_grass_url,
+    globals.img_enemy_url,
+    globals.img_boy_url
 ]);
 
 // Now instantiate your objects.

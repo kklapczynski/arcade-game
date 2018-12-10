@@ -12,8 +12,10 @@
  * This engine makes the canvas' context (ctx) object globally available to make
  * writing app.js a little simpler to work with.
  */
+import * as globals from './globals.js';
 
 export default class Engine {
+
     constructor(win, allEnemies, player, resources, ctx, canvas) {
         /* Predefine the variables we'll be using within this scope,
         * create the canvas element, grab the 2D context for that canvas
@@ -106,12 +108,12 @@ export default class Engine {
          * for that particular row of the game level.
          */
         const rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                globals.img_water_url,   // Top row is water
+                globals.img_stone_url,   // Row 1 of 3 of stone
+                globals.img_stone_url,   // Row 2 of 3 of stone
+                globals.img_stone_url,   // Row 3 of 3 of stone
+                globals.img_grass_url,   // Row 1 of 2 of grass
+                globals.img_grass_url    // Row 2 of 2 of grass
             ],
             numRows = 6,
             numCols = 5;

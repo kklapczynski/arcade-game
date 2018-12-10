@@ -2,7 +2,7 @@ import * as globals from './globals.js';
 
 export default class Player {
     constructor(allEnemies, ctx, resources) {
-        this.sprite = 'images/char-boy.png';
+        this.sprite = globals.img_boy_url;
         this.height = 77;       // measured with page ruler on running game
         this.width = 68;        // measured with page ruler on running game
         this.x = 2*globals.stepX;       // start in middle column

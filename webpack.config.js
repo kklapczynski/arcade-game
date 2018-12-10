@@ -22,7 +22,18 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node-modules/,
                 use: 'babel-loader'
-            }    // load all files ending with '.js' using babel-loader
+            },    // load all files ending with '.js' using babel-loader
+            {
+                test: /\.(png|jpg|gif)$/,
+                use: [
+                  {
+                    loader: 'file-loader',
+                    options: {
+                        outputPath: 'images/'
+                    }
+                  }
+                ]
+            }
         ]
     }
     //mode: 'development'         // bundles quicker without minifiying and other optimizations, which are done in prod mode
