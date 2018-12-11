@@ -2,7 +2,7 @@ const path = require('path');   // nodejs function - includes 'path' package int
 const HtmlWebpackPlugin = require('html-webpack-plugin');   // another package for webpack to build/stream html from src
 
 module.exports = {
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'cheap-module-eval-source-map',    // to get right line numbers in source files in debugger
     entry: ['babel-polyfill','./src/js/app.js'],
     output: {
         path: path.resolve(__dirname, 'dist'),  // was: path.resolve(__dirname, 'dist/js'), but dev-server wasn't updating when changes in index.html done
@@ -29,9 +29,15 @@ module.exports = {
                   {
                     loader: 'file-loader',
                     options: {
-                        outputPath: 'images/'
+                        outputPath: 'images/',
+                        name: '[name].[ext]'        // keeps original file name, without it was a hash
                     }
+                  },
+                  {
+                    loader: 'image-webpack-loader', // before adding this loader 5 images were 43,2 KB
+                    options: {}                     // now they are  20,6 KB
                   }
+
                 ]
             }
         ]

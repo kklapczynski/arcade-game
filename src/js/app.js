@@ -20,9 +20,9 @@ const resources = new Resources();
     * all of these images are properly loaded our game will start.
     */
 // DONE: change url to use: import img from './images/stone-block.png'
-// TODO: to use file-loader:
+// DONE: to use file-loader:
 // https://github.com/webpack-contrib/file-loader
-// TODO: to be able to use image optimistion with image-webpack-loader:
+// DONE: to be able to use image optimistion with image-webpack-loader:
 // https://github.com/tcoopman/image-webpack-loader
 
 resources.load([
