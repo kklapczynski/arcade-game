@@ -1,3 +1,4 @@
+// TODO: import image files here to use across application
 // global constants
 export const stepX = 101;  // equals col width in engine.render()
 export const stepY = 83;   // equals row heigth in engine.render()
