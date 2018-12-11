@@ -3,6 +3,7 @@ import img_water from '../images/water-block.png';
 import img_grass from '../images/grass-block.png';
 import img_enemy from '../images/enemy-bug.png';
 import img_boy from '../images/char-boy.png';
+// TODO: import image files here to use across application
 // global constants
 // to store url of imported image
 // https://stackoverflow.com/questions/39458511/how-to-use-es6-import-for-images
